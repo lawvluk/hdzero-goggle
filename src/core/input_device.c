@@ -265,10 +265,23 @@ void rbtn_click(right_button_t click_type) {
     case APP_STATE_VIDEO:
         if (click_type == RIGHT_CLICK) {
             dvr_cmd(DVR_TOGGLE);
-        } else if (click_type == RIGHT_LONG_PRESS) {
-            step_topfan();
-        } else if (click_type == RIGHT_DOUBLE_CLICK) {
-            ht_set_center_position();
+        } else {
+            if (g_source_info.source == SOURCE_HDZERO) {
+                HDZero_Close();   
+                app_switch_to_analog(1);
+                app_state_push(APP_STATE_VIDEO);
+                g_source_info.source = SOURCE_EXPANSION;
+                dvr_select_audio_source(2);
+                dvr_enable_line_out(true);
+            }
+            else if (g_source_info.source == SOURCE_EXPANSION) {
+                progress_bar.start = 1;
+                app_switch_to_hdzero(true);
+                app_state_push(APP_STATE_VIDEO);
+                g_source_info.source = SOURCE_HDZERO;
+                dvr_select_audio_source(2);
+                dvr_enable_line_out(true);
+            }
         }
         break;
     }

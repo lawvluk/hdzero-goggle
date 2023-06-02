@@ -33,7 +33,7 @@ void app_switch_to_menu() {
         ims_save();
         set_slider_value();
     }
-
+    
     app_state_push(APP_STATE_MAINMENU);
 
     // Stop recording if switching to menu mode from video mode regardless
@@ -56,6 +56,12 @@ void app_switch_to_menu() {
 
 void app_switch_to_analog(bool is_bay) {
     Source_AV(is_bay);
+
+    if (is_bay) {
+        DM5680_Power_AnalogModule(0); //power on analog module
+    } else {
+        DM5680_Power_AnalogModule(1); //power off analog module
+    }
 
     dvr_update_vi_conf(VR_720P50);
     osd_fhd(0);
@@ -104,6 +110,8 @@ void app_switch_to_hdmi_in() {
 //    false = user selected from auto scan page
 void app_switch_to_hdzero(bool is_default) {
     int ch;
+
+    DM5680_Power_AnalogModule(1); //power off analog module
 
     if (is_default) {
         ch = g_setting.scan.channel - 1;

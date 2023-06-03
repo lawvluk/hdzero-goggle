@@ -266,6 +266,7 @@ void rbtn_click(right_button_t click_type) {
         if (click_type == RIGHT_CLICK) {
             dvr_cmd(DVR_TOGGLE);
         } else {
+<<<<<<< HEAD
             if (g_source_info.source == SOURCE_HDZERO) { //switch from HDZ to analog
                 HDZero_Close();   
                 app_switch_to_analog(1);
@@ -275,6 +276,44 @@ void rbtn_click(right_button_t click_type) {
                 progress_bar.start = 1;
                 app_switch_to_hdzero(true);
                 g_source_info.source = SOURCE_HDZERO;
+=======
+            if (g_source_info.source == SOURCE_HDZERO) {
+                HDZero_Close();   
+                app_switch_to_analog(1);
+                g_source_info.source = SOURCE_EXPANSION;
+            }
+            else if (g_source_info.source == SOURCE_EXPANSION) {
+                progress_bar.start = 1;
+                app_switch_to_hdzero(true);
+                g_source_info.source = SOURCE_HDZERO;
+            }
+        }
+        break;
+
+    default:
+        break;
+    }
+}
+
+static void short_right_click_timeout(lv_timer_t *timer) {
+    lv_timer_del(timer);
+    right_click_timer = NULL;
+    rbtn_click0(true);
+}
+
+void rbtn_click(bool is_short) {
+    if (g_init_done != 1)
+        return;
+    if (is_short) {
+        if (!right_click_timer) {
+            right_click_timer = lv_timer_create(short_right_click_timeout, 200, NULL);
+        } else {
+            lv_timer_del(right_click_timer);
+            right_click_timer = NULL;
+            // double-click handler
+            if (g_app_state == APP_STATE_VIDEO) {
+                ht_set_center_position();
+>>>>>>> input_device_quick_switch
             }
         }
         break;

@@ -266,17 +266,6 @@ void rbtn_click(right_button_t click_type) {
         if (click_type == RIGHT_CLICK) {
             dvr_cmd(DVR_TOGGLE);
         } else {
-<<<<<<< HEAD
-            if (g_source_info.source == SOURCE_HDZERO) { //switch from HDZ to analog
-                HDZero_Close();   
-                app_switch_to_analog(1);
-                g_source_info.source = SOURCE_EXPANSION;
-            }
-            else if (g_source_info.source == SOURCE_EXPANSION) { //switch from analog to HDZ
-                progress_bar.start = 1;
-                app_switch_to_hdzero(true);
-                g_source_info.source = SOURCE_HDZERO;
-=======
             if (g_source_info.source == SOURCE_HDZERO) {
                 HDZero_Close();   
                 app_switch_to_analog(1);
@@ -313,7 +302,6 @@ void rbtn_click(bool is_short) {
             // double-click handler
             if (g_app_state == APP_STATE_VIDEO) {
                 ht_set_center_position();
->>>>>>> input_device_quick_switch
             }
         }
         break;
